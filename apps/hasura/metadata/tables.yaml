@@ -1,0 +1,174 @@
+- table:
+    schema: public
+    name: comment
+  object_relationships:
+  - name: post
+    using:
+      foreign_key_constraint_on: postId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        userId:
+          _eq: X-Hasura-User-Id
+      set:
+        userId: x-hasura-User-Id
+      columns:
+      - postId
+      - text
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - postId
+      - userId
+      - text
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - text
+      filter:
+        userId:
+          _eq: X-Hasura-User-Id
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        userId:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: post
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: creatorId
+  array_relationships:
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: postId
+        table:
+          schema: public
+          name: comment
+  insert_permissions:
+  - role: user
+    permission:
+      check:
+        creatorId:
+          _eq: X-Hasura-User-Id
+      set:
+        creatorId: x-hasura-User-Id
+      columns:
+      - text
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - creatorId
+      - id
+      - text
+      filter: {}
+      allow_aggregations: true
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - text
+      filter:
+        creatorId:
+          _eq: X-Hasura-User-Id
+      check: null
+      set:
+        creatorId: x-hasura-User-Id
+  delete_permissions:
+  - role: user
+    permission:
+      filter:
+        creatorId:
+          _eq: X-Hasura-User-Id
+- table:
+    schema: public
+    name: role
+  array_relationships:
+  - name: users
+    using:
+      foreign_key_constraint_on:
+        column: roleId
+        table:
+          schema: public
+          name: user_roles_role
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - value
+      filter:
+        users:
+          userId:
+            _eq: X-Hasura-User-Id
+      allow_aggregations: true
+- table:
+    schema: public
+    name: user
+  array_relationships:
+  - name: comments
+    using:
+      foreign_key_constraint_on:
+        column: userId
+        table:
+          schema: public
+          name: comment
+  - name: posts
+    using:
+      foreign_key_constraint_on:
+        column: creatorId
+        table:
+          schema: public
+          name: post
+  - name: roles
+    using:
+      foreign_key_constraint_on:
+        column: userId
+        table:
+          schema: public
+          name: user_roles_role
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - createdAt
+      - email
+      - id
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - email
+      filter:
+        id:
+          _eq: X-Hasura-User-Id
+      check: null
+- table:
+    schema: public
+    name: user_roles_role
+  object_relationships:
+  - name: role
+    using:
+      foreign_key_constraint_on: roleId
+  - name: user
+    using:
+      foreign_key_constraint_on: userId

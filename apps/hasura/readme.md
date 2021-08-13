@@ -1,0 +1,4 @@
+```
+./hasura-cli metadata apply
+```
+

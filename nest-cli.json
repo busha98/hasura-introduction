@@ -1,0 +1,66 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/auth-service/src",
+  "monorepo": true,
+  "root": "apps/auth-service",
+  "compilerOptions": {
+    "webpack": false,
+    "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+  },
+  "projects": {
+    "auth-service": {
+      "type": "application",
+      "root": "apps/auth-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/auth-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/auth-service/tsconfig.app.json"
+      }
+    },
+    "entities": {
+      "type": "library",
+      "root": "libs/entities",
+      "entryFile": "index",
+      "sourceRoot": "libs/entities/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/entities/tsconfig.lib.json"
+      }
+    },
+    "hasura": {
+      "type": "application",
+      "root": "apps/hasura",
+      "entryFile": "main",
+      "sourceRoot": "apps/hasura/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/hasura/tsconfig.app.json"
+      }
+    },
+    "deploy": {
+      "type": "application",
+      "root": "apps/deploy",
+      "entryFile": "main",
+      "sourceRoot": "apps/deploy/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/deploy/tsconfig.app.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    },
+    "migrations": {
+      "type": "application",
+      "root": "apps/migrations",
+      "entryFile": "main",
+      "sourceRoot": "apps/migrations/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/migrations/tsconfig.app.json"
+      }
+    }
+  }
+}
